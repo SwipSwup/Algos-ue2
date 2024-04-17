@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Algos_ue2;
 
-namespace Algos_ue2;
-
+// Code kopiert und angepasst von:
 // https://stackoverflow.com/questions/36311991/c-sharp-display-a-binary-search-tree-in-console
 
 public static class BTreePrinter
