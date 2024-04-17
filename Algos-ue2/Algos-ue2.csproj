@@ -48,8 +48,10 @@
         <Compile Include="src\Node.cs" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="resources\tree.txt" />
+      <Content Include="resources\tree1.txt" />
       <Content Include="resources\tree2.txt" />
+      <Content Include="resources\tree3.txt" />
+      <Content Include="resources\tree4.txt" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
