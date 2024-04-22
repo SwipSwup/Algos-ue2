@@ -80,9 +80,25 @@ namespace Algos_ue2
             return 0;
         }
 
-        public void SearchKeyValue(int keyValue)
+        public Node SearchKeyValue(int keyValue, Node node)
         {
-            //TODO IVO
+            if (_root == null)
+            {
+                Console.WriteLine("Key value " + keyValue + " doesn't exist");
+                return null;
+            }
+
+            if (node.KeyValue == keyValue)
+            {
+                Console.WriteLine("Keyvalue found");
+                return node;
+            }
+
+            if (keyValue < node.KeyValue)
+            {
+                return SearchKeyValue(keyValue, node.LeftNode);
+            }
+                return SearchKeyValue(keyValue, node.RightNode);
         }
 
         public void SearchSubTree(int[] subtree)

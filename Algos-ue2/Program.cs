@@ -14,9 +14,17 @@
         {
             BinaryTree tree = new();
             
-            tree.LoadTreeFromFile("../../resources/tree4.txt");
+            tree.LoadTreeFromFile("../../resources/tree1.txt");
+            
             
             BTreePrinter.Print(tree.Root, "(0)", 2);
+
+            BTreePrinter.Print(tree.SearchKeyValue(23, tree.Root), "(0)", 2);
+            
+            while (true)
+            {
+                
+            }
         }
     }
 }
