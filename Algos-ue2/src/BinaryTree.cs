@@ -11,7 +11,7 @@ namespace Algos_ue2
         private int _size;
 
         public Node Root => _root;
-        
+
         public void LoadTreeFromFile(string src)
         {
             string[] lines = File.ReadAllLines(src);
@@ -56,21 +56,36 @@ namespace Algos_ue2
             }
         }
 
-        public float Min()
+        public static float Min(BinaryTree tree)
         {
-            //TODO LUKAS
-            return 0f;
+            if (tree.Root.LeftNode == null)
+            {
+                return tree.Root.KeyValue;
+            }
+            else
+            {
+                tree._root = tree.Root.LeftNode;
+                return Min(tree);
+            }
         }
 
-        public float Max()
+        public static float Max(BinaryTree tree)
         {
-            //TODO LUKAS
-            return 0;
+            if (tree.Root.RightNode == null)
+            {
+                return tree.Root.KeyValue;
+            }
+            else
+            {
+                tree._root = tree.Root.RightNode;
+                return Max(tree);
+            }
         }
 
-        public float Avg()
+        public float Avg(BinaryTree tree)
         {
-            //TODO LUKAS
+
+
             return 0;
         }
 

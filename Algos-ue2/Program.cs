@@ -1,4 +1,6 @@
-﻿namespace Algos_ue2
+﻿using System;
+
+namespace Algos_ue2
 {
     internal class Program
     {
@@ -16,11 +18,16 @@
             
             tree.LoadTreeFromFile("../../resources/tree1.txt");
             
-            
+
+
             BTreePrinter.Print(tree.Root, "(0)", 2);
 
             BTreePrinter.Print(tree.SearchKeyValue(23, tree.Root), "(0)", 2);
-            
+
+            Console.WriteLine("Das minimum des Baumes ist: " + BinaryTree.Min(tree));
+            Console.WriteLine("Das maximum des Baumes ist: " + BinaryTree.Max(tree));
+
+
             while (true)
             {
                 
