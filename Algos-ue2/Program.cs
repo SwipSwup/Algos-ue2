@@ -24,8 +24,9 @@ namespace Algos_ue2
 
             BTreePrinter.Print(tree.SearchKeyValue(23, tree.Root), "(0)", 2);
 
-            Console.WriteLine("Das minimum des Baumes ist: " + BinaryTree.Min(tree));
-            Console.WriteLine("Das maximum des Baumes ist: " + BinaryTree.Max(tree));
+           
+            Console.WriteLine("Das maximum des Baumes ist: " + tree.Max());
+            Console.WriteLine("Das minimum des Baumes ist: " + tree.Min());
 
 
             while (true)

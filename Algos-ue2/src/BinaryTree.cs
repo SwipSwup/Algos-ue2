@@ -56,29 +56,44 @@ namespace Algos_ue2
             }
         }
 
-        public static float Min(BinaryTree tree)
+        public float Min(Node node = null)
         {
-            if (tree.Root.LeftNode == null)
+            if (node == null)
             {
-                return tree.Root.KeyValue;
+                return Min(_root);
             }
             else
             {
-                tree._root = tree.Root.LeftNode;
-                return Min(tree);
+                
+                if (node.LeftNode == null)
+                {
+                    return node.KeyValue;
+                }
+                else
+                {
+                    return Min(node.LeftNode);
+                }
             }
         }
 
-        public static float Max(BinaryTree tree)
+        public float Max(Node node = null)
         {
-            if (tree.Root.RightNode == null)
+            if (node == null)
             {
-                return tree.Root.KeyValue;
+                return Max(_root);
             }
+            
+            
             else
             {
-                tree._root = tree.Root.RightNode;
-                return Max(tree);
+                if (node.RightNode == null)
+                {
+                    return node.KeyValue;
+                }
+                else
+                {
+                    return Max(node.RightNode); 
+                }
             }
         }
 
