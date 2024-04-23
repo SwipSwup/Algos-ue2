@@ -97,13 +97,42 @@ namespace Algos_ue2
             }
         }
 
-        public float Avg(BinaryTree tree)
-        {
+        public float calcSumRec(Node node = null)
+        {   
+            float sum = 0;
+            if (node == null)
+            {
+              return calcSumRec(_root);
+            }
+            else
+            {
+               
+                if (node.LeftNode != null)
+                {
+                    sum += node.KeyValue + calcSumRec(node.LeftNode);
+                }
+                if (node.RightNode != null)
+                {
+                    sum += node.KeyValue + calcSumRec(node.RightNode);
+                }
+                
+                if (node.LeftNode == null & node.RightNode == null)
+                {
+                    sum += node.KeyValue;
+                }
+                
+                
+            }
 
+            return sum;
 
-            return 0;
         }
 
+        public float Avg()
+        {
+            return calcSumRec() / (_size + 1);
+        }
+        
         public float Balance(Node node)
         {
             //TODO IVO
@@ -112,7 +141,7 @@ namespace Algos_ue2
 
         public Node SearchKeyValue(int keyValue, Node node)
         {
-            if (_root == null)
+            if (node == null)
             {
                 Console.WriteLine("Key value " + keyValue + " doesn't exist");
                 return null;

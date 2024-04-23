@@ -16,7 +16,7 @@ namespace Algos_ue2
         {
             BinaryTree tree = new();
             
-            tree.LoadTreeFromFile("../../resources/tree1.txt");
+            tree.LoadTreeFromFile("../../resources/tree2.txt");
             
 
 
@@ -27,6 +27,7 @@ namespace Algos_ue2
            
             Console.WriteLine("Das maximum des Baumes ist: " + tree.Max());
             Console.WriteLine("Das minimum des Baumes ist: " + tree.Min());
+            Console.WriteLine("Das average des Baumes ist: " + tree.Avg());
 
 
             while (true)
