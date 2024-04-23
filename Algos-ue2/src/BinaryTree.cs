@@ -106,26 +106,18 @@ namespace Algos_ue2
             }
             else
             {
-               
+                sum += node.KeyValue;
+
                 if (node.LeftNode != null)
                 {
-                    sum += node.KeyValue + calcSumRec(node.LeftNode);
+                    sum += calcSumRec(node.LeftNode);
                 }
                 if (node.RightNode != null)
                 {
-                    sum += node.KeyValue + calcSumRec(node.RightNode);
+                    sum += calcSumRec(node.RightNode);
                 }
-                
-                if (node.LeftNode == null & node.RightNode == null)
-                {
-                    sum += node.KeyValue;
-                }
-                
-                
             }
-
             return sum;
-
         }
 
         public float Avg()
