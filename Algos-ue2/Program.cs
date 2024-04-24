@@ -16,18 +16,20 @@ namespace Algos_ue2
         {
             BinaryTree tree = new();
             
-            tree.LoadTreeFromFile("../../resources/tree2.txt");
+            tree.LoadTreeFromFile("../../resources/tree3.txt");
             
 
 
             BTreePrinter.Print(tree.Root, "(0)", 2);
 
-            BTreePrinter.Print(tree.SearchKeyValue(23, tree.Root), "(0)", 2);
+            //BTreePrinter.Print(tree.SearchKeyValue(23, tree.Root), "(0)", 2);
 
            
-            Console.WriteLine("Das maximum des Baumes ist: " + tree.Max());
+            /*Console.WriteLine("Das maximum des Baumes ist: " + tree.Max());
             Console.WriteLine("Das minimum des Baumes ist: " + tree.Min());
-            Console.WriteLine("Das average des Baumes ist: " + tree.Avg());
+            Console.WriteLine("Das average des Baumes ist: " + tree.Avg());*/
+            
+            tree.SearchSubTree(new int[] {10, 17, 7});
 
 
             while (true)

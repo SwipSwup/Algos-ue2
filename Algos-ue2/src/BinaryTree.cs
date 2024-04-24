@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Algos_ue2
 {
@@ -30,7 +32,7 @@ namespace Algos_ue2
 
             Node node = _root;
             _size++;
-            
+
             while (node != null)
             {
                 if (node.KeyValue > keyValue)
@@ -64,7 +66,6 @@ namespace Algos_ue2
             }
             else
             {
-                
                 if (node.LeftNode == null)
                 {
                     return node.KeyValue;
@@ -82,8 +83,8 @@ namespace Algos_ue2
             {
                 return Max(_root);
             }
-            
-            
+
+
             else
             {
                 if (node.RightNode == null)
@@ -92,17 +93,17 @@ namespace Algos_ue2
                 }
                 else
                 {
-                    return Max(node.RightNode); 
+                    return Max(node.RightNode);
                 }
             }
         }
 
         public float calcSumRec(Node node = null)
-        {   
+        {
             float sum = 0;
             if (node == null)
             {
-              return calcSumRec(_root);
+                return calcSumRec(_root);
             }
             else
             {
@@ -112,11 +113,13 @@ namespace Algos_ue2
                 {
                     sum += calcSumRec(node.LeftNode);
                 }
+
                 if (node.RightNode != null)
                 {
                     sum += calcSumRec(node.RightNode);
                 }
             }
+
             return sum;
         }
 
@@ -124,37 +127,55 @@ namespace Algos_ue2
         {
             return calcSumRec() / (_size + 1);
         }
-        
+
         public float Balance(Node node)
         {
             //TODO IVO
             return 0;
         }
 
-        public Node SearchKeyValue(int keyValue, Node node)
+        public void SearchKeyValue(int keyValue)
         {
+            Node node = SearchKeyValueInternal(keyValue, _root);
+
             if (node == null)
             {
                 Console.WriteLine("Key value " + keyValue + " doesn't exist");
+            }
+
+            Console.WriteLine("Keyvalue found");
+        }
+
+        private Node SearchKeyValueInternal(int keyValue, Node node)
+        {
+            if (node == null)
+            {
                 return null;
             }
 
             if (node.KeyValue == keyValue)
             {
-                Console.WriteLine("Keyvalue found");
                 return node;
             }
 
-            if (keyValue < node.KeyValue)
-            {
-                return SearchKeyValue(keyValue, node.LeftNode);
-            }
-                return SearchKeyValue(keyValue, node.RightNode);
+            return SearchKeyValueInternal(keyValue, keyValue < node.KeyValue ? node.LeftNode : node.RightNode);
         }
 
-        public void SearchSubTree(int[] subtree)
+        public void SearchSubTree(int[] subtree, Node node = null, int index = 0)
         {
-            //TODO lukas
+            if (index != 0 && node == null)
+            {
+                Console.WriteLine("Subtree not found");
+                return;
+            }
+
+            if (subtree.Length == index)
+            {
+                Console.WriteLine("Subtree found");
+                return;
+            }
+
+            SearchSubTree(subtree, SearchKeyValueInternal(subtree[index++], node ?? _root), index);
         }
     }
 }
