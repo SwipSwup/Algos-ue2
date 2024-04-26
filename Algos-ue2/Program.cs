@@ -4,36 +4,26 @@ namespace Algos_ue2
 {
     internal class Program
     {
-        /*
-         * TODO Einlesen und Aufbau des Baums (david)
-         * TODO Rekursive Berechnung Balance (ivo)
-         * TODO Rekursive Berechnung Min/Max/Avg (lukas)
-         * TODO Rekursive Suche Schlüsselwert (ivo)
-         * TODO Rekursive Suche Teilbaum (lukas)
-         */
-
         public static void Main(string[] args)
         {
-            BinaryTree tree = new();
-            
-            tree.LoadTreeFromFile("../../resources/tree2.txt");
-            
+            BinaryTree tree = new BinaryTree();
 
+            tree.LoadTreeFromFile("../../resources/tree3.txt");
 
             BTreePrinter.Print(tree.Root, "(0)", 2);
 
-            BTreePrinter.Print(tree.SearchKeyValue(23, tree.Root), "(0)", 2);
+            Console.WriteLine("Searching for key value 23:");
+            Node result = tree.SearchKeyValue(23, tree.Root);
+            if (result != null)
+                BTreePrinter.Print(result, "(0)", 2);
 
-           
-            Console.WriteLine("Das maximum des Baumes ist: " + tree.Max());
-            Console.WriteLine("Das minimum des Baumes ist: " + tree.Min());
-            Console.WriteLine("Das average des Baumes ist: " + tree.Avg());
+            Console.WriteLine($"The maximum value in the tree is: {tree.Max()}");
+            Console.WriteLine($"The minimum value in the tree is: {tree.Min()}");
+            Console.WriteLine($"The average value in the tree is: {tree.Avg()}");
 
+            tree.ValidateAVL();
 
-            while (true)
-            {
-                
-            }
+            Console.ReadLine();
         }
     }
 }

@@ -7,7 +7,6 @@ namespace Algos_ue2
     public class BinaryTree
     {
         private Node _root;
-
         private int _size;
 
         public Node Root => _root;
@@ -56,105 +55,133 @@ namespace Algos_ue2
             }
         }
 
-        public float Min(Node node = null)
+        private int CalculateHeight(Node node)
         {
             if (node == null)
-            {
-                return Min(_root);
-            }
-            else
-            {
-                
-                if (node.LeftNode == null)
-                {
-                    return node.KeyValue;
-                }
-                else
-                {
-                    return Min(node.LeftNode);
-                }
-            }
+                return 0;
+
+            int leftHeight = CalculateHeight(node.LeftNode);
+            int rightHeight = CalculateHeight(node.RightNode);
+
+            return Math.Max(leftHeight, rightHeight) + 1;
         }
 
-        public float Max(Node node = null)
+        private int Balance(Node node)
         {
             if (node == null)
-            {
-                return Max(_root);
-            }
-            
-            
-            else
-            {
-                if (node.RightNode == null)
-                {
-                    return node.KeyValue;
-                }
-                else
-                {
-                    return Max(node.RightNode); 
-                }
-            }
+                return 0;
+
+            int leftHeight = CalculateHeight(node.LeftNode);
+            int rightHeight = CalculateHeight(node.RightNode);
+
+            return rightHeight - leftHeight;
         }
 
-        public float calcSumRec(Node node = null)
+        private bool IsAVLTree(Node node)
+        {
+            if (node == null)
+                return true;
+
+            int balanceFactor = Balance(node);
+
+            // Print balance factor for current node
+            Console.WriteLine($"bal({node.KeyValue}) = {balanceFactor}");
+
+            // Check for AVL violation
+            if (balanceFactor > 1 || balanceFactor < -1)
+            {
+                Console.WriteLine($"bal({node.KeyValue}) = {balanceFactor} (AVL violation!)");
+                return false;
+            }
+
+            // Recursively check left and right subtrees
+            return IsAVLTree(node.LeftNode) && IsAVLTree(node.RightNode);
+        }
+
+        public bool IsAVL()
+        {
+            return IsAVLTree(_root);
+        }
+
+        public void ValidateAVL()
+        {
+            bool isAVL = IsAVL();
+
+            if (isAVL)
+                Console.WriteLine("AVL: yes");
+            else
+                Console.WriteLine("AVL: no");
+        }
+
+        public int Min(Node node = null)
+        {
+            if (node == null)
+                node = _root;
+
+            if (node.LeftNode == null)
+                return node.KeyValue;
+
+            return Min(node.LeftNode);
+        }
+
+        public int Max(Node node = null)
+        {
+            if (node == null)
+                node = _root;
+
+            if (node.RightNode == null)
+                return node.KeyValue;
+
+            return Max(node.RightNode);
+        }
+
+        private float CalcSumRec(Node node)
         {   
-            float sum = 0;
             if (node == null)
-            {
-              return calcSumRec(_root);
-            }
-            else
-            {
-                sum += node.KeyValue;
+                return 0;
 
-                if (node.LeftNode != null)
-                {
-                    sum += calcSumRec(node.LeftNode);
-                }
-                if (node.RightNode != null)
-                {
-                    sum += calcSumRec(node.RightNode);
-                }
-            }
+            float sum = node.KeyValue;
+
+            if (node.LeftNode != null)
+                sum += CalcSumRec(node.LeftNode);
+
+            if (node.RightNode != null)
+                sum += CalcSumRec(node.RightNode);
+
             return sum;
         }
 
         public float Avg()
         {
-            return calcSumRec() / (_size + 1);
-        }
-        
-        public float Balance(Node node)
-        {
-            //TODO IVO
-            return 0;
+            if (_root == null)
+                return 0;
+
+            return CalcSumRec(_root) / (_size + 1);
         }
 
         public Node SearchKeyValue(int keyValue, Node node)
         {
             if (node == null)
             {
-                Console.WriteLine("Key value " + keyValue + " doesn't exist");
+                Console.WriteLine($"Key value {keyValue} doesn't exist");
                 return null;
             }
 
             if (node.KeyValue == keyValue)
             {
-                Console.WriteLine("Keyvalue found");
+                Console.WriteLine("Key value found");
                 return node;
             }
 
             if (keyValue < node.KeyValue)
-            {
                 return SearchKeyValue(keyValue, node.LeftNode);
-            }
-                return SearchKeyValue(keyValue, node.RightNode);
+            
+            return SearchKeyValue(keyValue, node.RightNode);
         }
 
         public void SearchSubTree(int[] subtree)
         {
-            //TODO lukas
+            // TODO: Lukas
         }
     }
 }
