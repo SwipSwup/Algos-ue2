@@ -69,9 +69,9 @@ namespace Algos_ue2
         }
 
         /// <summary>
-        /// 
+        /// Calculates the height
         /// </summary>
-        /// <param name="node"></param>
+        /// <param name="node">Node</param>
         /// <returns></returns>
         private int CalculateHeight(Node node)
         {
@@ -85,9 +85,9 @@ namespace Algos_ue2
         }
 
         /// <summary>
-        /// 
+        /// Calculates the balance of the tree
         /// </summary>
-        /// <param name="node"></param>
+        /// <param name="node">Node</param>
         /// <returns></returns>
         private int Balance(Node node)
         {
@@ -101,10 +101,10 @@ namespace Algos_ue2
         }
 
         /// <summary>
-        /// 
+        /// Checks if the tree is a AVL tree, via AVL violations
         /// </summary>
-        /// <param name="node"></param>
-        /// <param name="isAVL"></param>
+        /// <param name="node">Node</param>
+        /// <param name="isAVL">Check if the tree is AVL</param>
         private void IsAVLTree(Node node, ref bool isAVL)
         {
             if (node == null)
@@ -129,11 +129,7 @@ namespace Algos_ue2
             IsAVLTree(node.LeftNode, ref isAVL);
             IsAVLTree(node.RightNode, ref isAVL);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+        
         public bool IsAVL()
         {
             bool isAVL = true;
@@ -187,9 +183,9 @@ namespace Algos_ue2
         }
 
         /// <summary>
-        /// 
+        /// Checks if Node is there else adds the keyvalue to the node
         /// </summary>
-        /// <param name="node"></param>
+        /// <param name="node">Node</param>
         /// <returns></returns>
         private float CalcSumRec(Node node)
         {
