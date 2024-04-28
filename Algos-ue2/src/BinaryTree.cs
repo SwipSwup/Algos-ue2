@@ -1,44 +1,55 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
 
 namespace Algos_ue2
 {
     public class BinaryTree
     {
-        private Node _root;
         private int _size;
 
-        public Node Root => _root;
+        public Node Root { get; private set; }
 
+        /// <summary>
+        /// Loads a binary tree from a file
+        /// </summary>
+        /// <param name="src">The path of the file</param>
         public void LoadTreeFromFile(string src)
-        {
+        {   
             string[] lines = File.ReadAllLines(src);
 
             foreach (string line in lines)
                 AddNode(int.Parse(line));
         }
 
+        /// <summary>
+        /// Adds a new node to the binary tree
+        /// </summary>
+        /// <param name="keyValue">The keyvalue to be added</param>
         public void AddNode(int keyValue)
         {
-            if (_root == null)
+            if (Root == null)
             {
-                _root = new Node(keyValue);
+                Root = new Node(keyValue);
+                _size++;
+
                 return;
             }
 
-            Node node = _root;
-            _size++;
+            Node node = Root;
 
             while (node != null)
             {
+                if (node.KeyValue == keyValue)
+                    return;
+
+                _size++;
                 if (node.KeyValue > keyValue)
                 {
                     if (node.LeftNode == null)
                     {
                         node.LeftNode = new Node(keyValue);
+
                         return;
                     }
 
@@ -57,6 +68,11 @@ namespace Algos_ue2
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         private int CalculateHeight(Node node)
         {
             if (node == null)
@@ -68,6 +84,11 @@ namespace Algos_ue2
             return Math.Max(leftHeight, rightHeight) + 1;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         private int Balance(Node node)
         {
             if (node == null)
@@ -79,32 +100,50 @@ namespace Algos_ue2
             return rightHeight - leftHeight;
         }
 
-        private bool IsAVLTree(Node node)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="isAVL"></param>
+        private void IsAVLTree(Node node, ref bool isAVL)
         {
             if (node == null)
-                return true;
+                return;
 
             int balanceFactor = Balance(node);
 
-            // Print balance factor for current node
-            Console.WriteLine($"bal({node.KeyValue}) = {balanceFactor}");
 
             // Check for AVL violation
             if (balanceFactor > 1 || balanceFactor < -1)
             {
                 Console.WriteLine($"bal({node.KeyValue}) = {balanceFactor} (AVL violation!)");
-                return false;
+                isAVL = false;
+            }
+            else
+            {
+                // Print balance factor for current node
+                Console.WriteLine($"bal({node.KeyValue}) = {balanceFactor}");
             }
 
             // Recursively check left and right subtrees
-            return IsAVLTree(node.LeftNode) && IsAVLTree(node.RightNode);
+            IsAVLTree(node.LeftNode, ref isAVL);
+            IsAVLTree(node.RightNode, ref isAVL);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public bool IsAVL()
         {
-            return IsAVLTree(_root);
+            bool isAVL = true;
+            IsAVLTree(Root, ref isAVL);
+            return isAVL;
         }
 
+        /// <summary>
+        /// Checks if the tree is AVL valid and prints the result
+        /// </summary>
         public void ValidateAVL()
         {
             bool isAVL = IsAVL();
@@ -115,10 +154,15 @@ namespace Algos_ue2
                 Console.WriteLine("AVL: no");
         }
 
+        /// <summary>
+        /// Looks for the smallest keyvalue in the tree
+        /// </summary>
+        /// <param name="node">The node from which the search should start</param>
+        /// <returns>The smallest keyvalue of the tree</returns>
         public int Min(Node node = null)
         {
             if (node == null)
-                node = _root;
+                node = Root;
 
             if (node.LeftNode == null)
                 return node.KeyValue;
@@ -126,10 +170,15 @@ namespace Algos_ue2
             return Min(node.LeftNode);
         }
 
+        /// <summary>
+        /// Looks for the biggest keyvalue in the tree
+        /// </summary>
+        /// <param name="node">The node from which the search should start</param>
+        /// <returns>The biggest keyvalue of the tree</returns>
         public int Max(Node node = null)
         {
             if (node == null)
-                node = _root;
+                node = Root;
 
             if (node.RightNode == null)
                 return node.KeyValue;
@@ -137,8 +186,13 @@ namespace Algos_ue2
             return Max(node.RightNode);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         private float CalcSumRec(Node node)
-        {   
+        {
             if (node == null)
                 return 0;
 
@@ -153,48 +207,86 @@ namespace Algos_ue2
             return sum;
         }
 
+        /// <summary>
+        /// Calculates the the avarage of all keyvalues
+        /// </summary>
+        /// <returns>The avarage of keyvalues</returns>
         public float Avg()
         {
-            if (_root == null)
+            if (Root == null)
                 return 0;
 
-            return CalcSumRec(_root) / (_size + 1);
-        }
-        
-        public float Balance(Node node)
-        {
-            //TODO IVO
-            return 0;
+            return CalcSumRec(Root) / (_size + 1);
         }
 
+        /// <summary>
+        /// Searches for a specific key value and prints the result
+        /// </summary>
+        /// <param name="keyValue">The value to search for</param>
         public void SearchKeyValue(int keyValue)
         {
-            Node node = SearchKeyValueInternal(keyValue, _root);
+            List<int> steps = new List<int>();
+            Node node = SearchKeyValueInternal(keyValue, Root, ref steps);
 
             if (node == null)
             {
-                Console.WriteLine("Key value " + keyValue + " doesn't exist");
+                Console.WriteLine($"{keyValue} not found");
+                return;
             }
 
-            Console.WriteLine("Keyvalue found");
+            Console.WriteLine($"{keyValue} found {string.Join(", ", steps)}");
         }
 
+        /// <summary>
+        /// Overload of helper function without the steps. Returns null if the key value doesnt exist
+        /// </summary>
+        /// <param name="keyValue">The value to look for</param>
+        /// <param name="node">The node to start the search</param>
+        /// <returns>The Node of the keyValue</returns>
         private Node SearchKeyValueInternal(int keyValue, Node node)
         {
-            if (node == null)
+            List<int> ignored = new List<int>();
+
+            return SearchKeyValueInternal(keyValue, node, ref ignored);
+        }
+
+        /// <summary>
+        /// Internal helper function to search for the key value. Returns null if the key value doesnt exist
+        /// </summary>
+        /// <param name="keyValue">The value to look for</param>
+        /// <param name="node">The node to start the search</param>
+        /// <param name="steps">The steps that the algorithm took</param>
+        /// <returns>The Node of the keyValue</returns>
+        private Node SearchKeyValueInternal(int keyValue, Node node, ref List<int> steps)
+        {
+            if ( node == null)
             {
                 return null;
             }
 
+            /*if ((node.LeftNode != null || node.LeftNode!.KeyValue > keyValue) &&
+                (node.RightNode != null || node.RightNode!.KeyValue < keyValue))
+            {
+                return null;
+            }*/
+
             if (node.KeyValue == keyValue)
             {
-                Console.WriteLine("Keyvalue found");
+                steps.Add(node.KeyValue);
                 return node;
             }
 
-            return SearchKeyValueInternal(keyValue, keyValue < node.KeyValue ? node.LeftNode : node.RightNode);
+            steps.Add(node.KeyValue);
+            return SearchKeyValueInternal(keyValue, keyValue < node.KeyValue ? node.LeftNode : node.RightNode,
+                ref steps);
         }
 
+        /// <summary>
+        /// Searches the tree for a specific subtree
+        /// </summary>
+        /// <param name="subtree">The nodes to look for</param>
+        /// <param name="node">The node to start the search</param>
+        /// <param name="index">Index for the subtree array</param>
         public void SearchSubTree(int[] subtree, Node node = null, int index = 0)
         {
             if (index != 0 && node == null)
@@ -209,7 +301,7 @@ namespace Algos_ue2
                 return;
             }
 
-            SearchSubTree(subtree, SearchKeyValueInternal(subtree[index++], node ?? _root), index);
+            SearchSubTree(subtree, SearchKeyValueInternal(subtree[index++], node ?? Root), index);
         }
     }
 }
