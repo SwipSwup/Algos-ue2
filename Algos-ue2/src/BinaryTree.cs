@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Algos_ue2
 {
@@ -29,7 +31,7 @@ namespace Algos_ue2
 
             Node node = _root;
             _size++;
-            
+
             while (node != null)
             {
                 if (node.KeyValue > keyValue)
@@ -158,30 +160,56 @@ namespace Algos_ue2
 
             return CalcSumRec(_root) / (_size + 1);
         }
+        
+        public float Balance(Node node)
+        {
+            //TODO IVO
+            return 0;
+        }
 
-        public Node SearchKeyValue(int keyValue, Node node)
+        public void SearchKeyValue(int keyValue)
+        {
+            Node node = SearchKeyValueInternal(keyValue, _root);
+
+            if (node == null)
+            {
+                Console.WriteLine("Key value " + keyValue + " doesn't exist");
+            }
+
+            Console.WriteLine("Keyvalue found");
+        }
+
+        private Node SearchKeyValueInternal(int keyValue, Node node)
         {
             if (node == null)
             {
-                Console.WriteLine($"Key value {keyValue} doesn't exist");
                 return null;
             }
 
             if (node.KeyValue == keyValue)
             {
-                Console.WriteLine("Key value found");
+                Console.WriteLine("Keyvalue found");
                 return node;
             }
 
-            if (keyValue < node.KeyValue)
-                return SearchKeyValue(keyValue, node.LeftNode);
-            
-            return SearchKeyValue(keyValue, node.RightNode);
+            return SearchKeyValueInternal(keyValue, keyValue < node.KeyValue ? node.LeftNode : node.RightNode);
         }
 
-        public void SearchSubTree(int[] subtree)
+        public void SearchSubTree(int[] subtree, Node node = null, int index = 0)
         {
-            // TODO: Lukas
+            if (index != 0 && node == null)
+            {
+                Console.WriteLine("Subtree not found");
+                return;
+            }
+
+            if (subtree.Length == index)
+            {
+                Console.WriteLine("Subtree found");
+                return;
+            }
+
+            SearchSubTree(subtree, SearchKeyValueInternal(subtree[index++], node ?? _root), index);
         }
     }
 }

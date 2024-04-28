@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Algos_ue2
 {
